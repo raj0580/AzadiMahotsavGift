@@ -16,3 +16,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// Make the db and auth objects available to other scripts
+const db = firebase.firestore();
+const auth = firebase.auth();
