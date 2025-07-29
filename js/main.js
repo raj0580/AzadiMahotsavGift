@@ -1,6 +1,5 @@
 // =========================================================================
 // === ACTION REQUIRED: PASTE YOUR FIREBASE CONFIGURATION OBJECT HERE ===
-// =========================================================================
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBqoN7rA8ql_iJfGpcZGhKuFi5tGSPbXAc",
@@ -42,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         participantsCount: document.getElementById('participants-count'),
         rewardsTotal: document.getElementById('rewards-total'),
         leaderboardList: document.getElementById('leaderboard-list'),
-        // New Progress Bar Elements
         progressBarInner: document.getElementById('progress-bar-inner'),
         progressText: document.getElementById('progress-text')
     };
@@ -139,19 +137,14 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.task2Container.style.display = 'block';
     });
     
-    // === UPDATED SHARE BUTTON LOGIC ===
     elements.shareFriendsButton.addEventListener('click', (e) => {
         e.preventDefault();
-        if (state.shareClicks >= config.requiredClicks) return; // Prevent extra clicks
-
+        if (state.shareClicks >= config.requiredClicks) return;
         state.shareClicks++;
         const progressPercentage = (state.shareClicks / config.requiredClicks) * 100;
-        
         elements.progressBarInner.style.width = `${progressPercentage}%`;
         elements.progressText.textContent = `${state.shareClicks}/${config.requiredClicks}`;
-        
         window.open(e.currentTarget.href, '_blank');
-
         if (state.shareClicks >= config.requiredClicks) {
             elements.shareFriendsButton.classList.add('disabled');
             elements.shareFriendsButton.textContent = "Reward Unlocked!";
@@ -222,11 +215,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleWinFormSubmit(e) {
         e.preventDefault();
-        const prizeWonText = elements.winMessage.textContent.split(': ') || elements.winMessage.textContent;
+        
+        // === FIXED: How the prize text is extracted to prevent errors ===
+        const winText = elements.winMessage.textContent;
+        const prizeWonText = winText.substring(winText.indexOf(':') + 2).replace('!', '');
+
         const winnerData = {
             name: document.getElementById('winner-name').value,
             mobile: document.getElementById('winner-mobile').value,
-            prize: prizeWonText.replace('!', ''),
+            prize: prizeWonText,
             state: localStorage.getItem('userState'),
             timestamp: new Date().toISOString()
         };
@@ -246,10 +243,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setupShareButtons(prizeName) {
         const shareMsg = encodeURIComponent(`I just won ${prizeName} in the Independence Day event! You can try your luck too! Join here: ${window.location.href}`);
-        elements.whatsappStoryButton.href = `https://wa.me/?text=${shareMsg}`;
-        elements.shareFriendsButton.href = `https://wa.me/?text=${shareMsg}`;
+        
+        // === FIXED: Check if the elements exist before setting href ===
+        if (elements.whatsappStoryButton) {
+            elements.whatsappStoryButton.href = `https://wa.me/?text=${shareMsg}`;
+        }
+        if (elements.shareFriendsButton) {
+            elements.shareFriendsButton.href = `https://wa.me/?text=${shareMsg}`;
+        }
+       
         const bonusMsg = encodeURIComponent(`🔥 BIGGEST REWARD! 🔥 Share with 25 friends to win ₹50,000 + Dinner with PM Modi! Join now: ${window.location.href}`);
-        elements.bonusShareButton.href = `https://wa.me/?text=${bonusMsg}`;
+        if (elements.bonusShareButton) {
+            elements.bonusShareButton.href = `https://wa.me/?text=${bonusMsg}`;
+        }
     }
 
     initialize();
