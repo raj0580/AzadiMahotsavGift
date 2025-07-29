@@ -36,7 +36,7 @@ body {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 800px;
     margin: 2rem auto;
     padding: 2rem;
     background: rgba(255, 255, 255, 0.95);
@@ -178,77 +178,54 @@ footer {
     padding: 1rem;
     font-size: 0.8rem;
     color: #555;
-    max-width: 600px;
+    max-width: 800px;
     margin: 1rem auto;
     background: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
 }
 
-/* Form Styles */
-.form-group {
-    margin-bottom: 1.5rem;
-    text-align: left;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: var(--dark-text);
-}
-.form-group input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-.form-group input[readonly] {
-    background-color: #e9ecef;
-    cursor: not-allowed;
-}
-
-/* Admin Panel Styles */
-#admin-panel header {
+/* --- Ad Container Styles (CRITICAL FIX) --- */
+.ad-container-top,
+.ad-container-native,
+.ad-container-modal,
+.ad-container-footer {
+    margin: 25px auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
+    overflow: hidden; /* Prevents oversized ads from breaking layout */
+    max-width: 100%;
 }
-.controls {
-    margin: 1rem 0;
-}
-.table-container {
-    overflow-x: auto;
-}
-#submissions-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-}
-#submissions-table th, #submissions-table td {
-    padding: 12px;
+.ad-container-native {
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
     border: 1px solid #ddd;
-    text-align: left;
 }
-#submissions-table th {
-    background-color: var(--saffron);
-    color: white;
-    cursor: pointer;
-}
-#submissions-table tr:nth-child(even) {
-    background-color: #f2f2f2;
+.ad-container-modal {
+    margin-bottom: 25px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     h1 { font-size: 1.5rem; }
-    .container {
+    .container, footer {
         margin: 1rem;
         padding: 1.5rem;
     }
     .modi-img {
         width: 100px;
         right: 5px;
+    }
+    /* Hide desktop-only ad on mobile */
+    .ad-container-top {
+        display: none;
+    }
+}
+
+@media (min-width: 769px) {
+    /* Hide mobile-only ad on desktop */
+    .ad-container-footer {
+        display: none;
     }
 }
