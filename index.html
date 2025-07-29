@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="title">Independence Day Rewards</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="initial-popup" class="modal-overlay">
+        <div class="modal-content">
+            <h2 data-i18n="welcome_popup_title"></h2><p data-i18n="welcome_popup_desc"></p>
+            <form id="initial-form">
+                <select id="state-select" required>
+                    <option value="" data-i18n="select_state"></option>
+                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option><option value="Andhra Pradesh">Andhra Pradesh</option><option value="Arunachal Pradesh">Arunachal Pradesh</option><option value="Assam">Assam</option><option value="Bihar">Bihar</option><option value="Chandigarh">Chandigarh</option><option value="Chhattisgarh">Chhattisgarh</option><option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option><option value="Delhi">Delhi</option><option value="Goa">Goa</option><option value="Gujarat">Gujarat</option><option value="Haryana">Haryana</option><option value="Himachal Pradesh">Himachal Pradesh</option><option value="Jammu and Kashmir">Jammu and Kashmir</option><option value="Jharkhand">Jharkhand</option><option value="Karnataka">Karnataka</option><option value="Kerala">Kerala</option><option value="Ladakh">Ladakh</option><option value="Lakshadweep">Lakshadweep</option><option value="Madhya Pradesh">Madhya Pradesh</option><option value="Maharashtra">Maharashtra</option><option value="Manipur">Manipur</option><option value="Meghalaya">Meghalaya</option><option value="Mizoram">Mizoram</option><option value="Nagaland">Nagaland</option><option value="Odisha">Odisha</option><option value="Puducherry">Puducherry</option><option value="Punjab">Punjab</option><option value="Rajasthan">Rajasthan</option><option value="Sikkim">Sikkim</option><option value="Tamil Nadu">Tamil Nadu</option><option value="Telangana">Telangana</option><option value="Tripura">Tripura</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Uttarakhand">Uttarakhand</option><option value="West Bengal">West Bengal</option>
+                </select>
+                <select id="language-select" required>
+                    <option value="en" data-i18n="select_language"></option><option value="en">English</option><option value="hi">हिंदी (Hindi)</option><option value="bn">বাংলা (Bangla)</option>
+                </select>
+                <button type="submit" class="button" data-i18n="submit_button"></button>
+            </form>
+        </div>
+    </div>
+
+    <div id="main-container" class="main-container">
+        <header class="main-header">
+            <div class="ad-container">
+                <script type="text/javascript">atOptions = { 'key' : 'e708e24da08ad4aa0b3b227715c44787', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };</script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/e708e24da08ad4aa0b3b227715c44787/invoke.js"></script>
+            </div>
+            <h1><img src="images/flag.png" alt="Indian Flag" class="header-flag-icon"><span data-i18n="home_title"></span></h1>
+            <p class="subtitle" data-i18n="home_subtitle"></p>
+        </header>
+
+        <main id="main-content" class="main-content">
+            <section id="game-section" class="card" style="background: none; box-shadow: none; padding: 0;">
+                <div class="spin-game-container">
+                    <img src="images/lucky_spin_title.png" class="lucky-spin-title" alt="Lucky Spin">
+                    <div class="wheel-assembly">
+                        <img src="images/pointer.png" class="wheel-pointer" alt="pointer">
+                        <div class="wheel" style="background-image: url('images/wheel_bg.png');"><div id="spinner" class="spinner"></div></div>
+                        <div id="spin-button" class="spin-button-container" style="background-image: url('images/spin_button_bg.png');"><div class="spin-button-text">SPIN</div></div>
+                    </div>
+                    <div class="wheel-stand-container">
+                        <img src="images/stand.png" class="wheel-stand" alt="wheel stand">
+                        <div id="spin-counter" class="spin-counter"><span data-i18n="spins_left"></span>: <span id="spins-left">2</span></div>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="ad-container">
+                <script type="text/javascript">atOptions = { 'key' : '16272c9a6ff13f0abaa89421fd32886d', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/16272c9a6ff13f0abaa89421fd32886d/invoke.js"></script>
+            </div>
+
+            <section id="hype-section" class="card">
+                <h2 class="card-title">Live Activity</h2>
+                <div class="stats-bar">
+                    <div class="stat-item"><div class="stat-value" id="participants-count">1,45,234</div><div class="stat-label">Participants</div></div>
+                    <div class="stat-item"><div class="stat-value">₹<span id="rewards-total">7,89,450</span></div><div class="stat-label">Rewards Distributed</div></div>
+                </div>
+                <div class="leaderboard"><h3>Top 5 Winners</h3><ol id="leaderboard-list"></ol></div>
+            </section>
+            
+            <div class="ad-container">
+                <script async="async" data-cfasync="false" src="//pl27291175.profitableratecpm.com/66a14903f68cd9f29659ee1363ad8e75/invoke.js"></script>
+                <div id="container-66a14903f68cd9f29659ee1363ad8e75"></div>
+            </div>
+
+            <section id="task-section" class="card">
+                <h2 class="card-title" data-i18n="task_title"></h2>
+                <div id="task-1-container">
+                    <h3 data-i18n="task_1_story_title"></h3><p data-i18n="task_1_story_desc"></p>
+                    <a href="#" id="whatsapp-story-button" class="button" data-i18n="share_on_whatsapp_story"></a>
+                </div>
+                <div id="task-2-container">
+                    <h3 data-i18n="task_2_friends_title"></h3><p data-i18n="task_2_friends_desc"></p>
+                    <!-- NEW PROGRESS BAR -->
+                    <div class="progress-container">
+                        <div class="progress-bar-outer"><div id="progress-bar-inner" class="progress-bar-inner"></div></div>
+                        <div id="progress-text" class="progress-text">0/10</div>
+                    </div>
+                    <button id="share-friends-button" class="button" data-i18n="share_with_friends"></button>
+                </div>
+            </section>
+
+             <section id="bonus-section" class="card bonus-card">
+                <h2 class="card-title" data-i18n="extra_reward_title"></h2><p data-i18n="extra_reward_desc"></p>
+                <a href="#" id="bonus-share-button" class="button" data-i18n="invite_and_win"></a>
+            </section>
+        </main>
+
+        <footer class="main-footer">
+            <p>Powered by YourBrandName</p>
+            <div class="footer-links"><a href="privacy.html" target="_blank" data-i18n="privacy_policy"></a> | <a href="terms.html" target="_blank" data-i18n="terms_conditions"></a></div>
+        </footer>
+    </div>
+    
+    <div id="win-popup" class="modal-overlay">
+        <div class="modal-content">
+            <img id="modi-win-image" src="images/modi.jpg" alt="Narendra Modi">
+            <h2 data-i18n="win_title"></h2><p id="win-message"></p><p data-i18n="win_form_title"></p>
+            <form id="win-form">
+                <input type="text" id="winner-name" placeholder="Enter Your Name" data-i18n="[placeholder]name_label" required>
+                <input type="tel" id="winner-mobile" placeholder="Enter GPay/PhonePe/Paytm Number" data-i18n="[placeholder]mobile_label" required pattern="[6-9]{1}[0-9]{9}">
+                <button type="submit" class="button" data-i18n="claim_button"></button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="sticky-footer-ad">
+        <script type="text/javascript">atOptions = { 'key' : '139f156db7811aff97d508b6f4565b71', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };</script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/139f156db7811aff97d508b6f4565b71/invoke.js"></script>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script type='text/javascript' src='//pl27291162.profitableratecpm.com/22/6e/7e/226e7e6dbd83e00be1c79c35631d9163.js'></script>
+</body>
+</html>
