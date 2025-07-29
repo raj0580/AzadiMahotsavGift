@@ -18,42 +18,19 @@ const database = firebase.database();
 document.addEventListener('DOMContentLoaded', () => {
     let translations = {};
     const elements = {
-        initialPopup: document.getElementById('initial-popup'),
-        initialForm: document.getElementById('initial-form'),
-        languageSelect: document.getElementById('language-select'),
-        stateSelect: document.getElementById('state-select'),
-        mainContainer: document.getElementById('main-container'),
-        spinButton: document.getElementById('spin-button'),
-        spinner: document.getElementById('spinner'),
-        spinsLeftText: document.getElementById('spins-left'),
-        winPopup: document.getElementById('win-popup'),
-        winForm: document.getElementById('win-form'),
-        winMessage: document.getElementById('win-message'),
-        taskSection: document.getElementById('task-section'),
-        bonusSection: document.getElementById('bonus-section'),
-        whatsappStoryButton: document.getElementById('whatsapp-story-button'),
-        shareFriendsButton: document.getElementById('share-friends-button'),
-        task1Container: document.getElementById('task-1-container'),
-        task2Container: document.getElementById('task-2-container'),
-        gameSection: document.getElementById('game-section'),
-        hypeSection: document.getElementById('hype-section'),
-        modiWinImage: document.getElementById('modi-win-image'),
-        participantsCount: document.getElementById('participants-count'),
-        rewardsTotal: document.getElementById('rewards-total'),
-        leaderboardList: document.getElementById('leaderboard-list'),
-        progressBarInner: document.getElementById('progress-bar-inner'),
-        progressText: document.getElementById('progress-text')
+        initialPopup: document.getElementById('initial-popup'), initialForm: document.getElementById('initial-form'), languageSelect: document.getElementById('language-select'), stateSelect: document.getElementById('state-select'), mainContainer: document.getElementById('main-container'), spinButton: document.getElementById('spin-button'), spinner: document.getElementById('spinner'), spinsLeftText: document.getElementById('spins-left'), winPopup: document.getElementById('win-popup'), winForm: document.getElementById('win-form'), winMessage: document.getElementById('win-message'), taskSection: document.getElementById('task-section'), bonusSection: document.getElementById('bonus-section'), whatsappStoryButton: document.getElementById('whatsapp-story-button'), shareFriendsButton: document.getElementById('share-friends-button'), task1Container: document.getElementById('task-1-container'), task2Container: document.getElementById('task-2-container'), gameSection: document.getElementById('game-section'), hypeSection: document.getElementById('hype-section'), modiWinImage: document.getElementById('modi-win-image'), participantsCount: document.getElementById('participants-count'), rewardsTotal: document.getElementById('rewards-total'), leaderboardList: document.getElementById('leaderboard-list'), progressBarInner: document.getElementById('progress-bar-inner'), progressText: document.getElementById('progress-text')
     };
 
     const config = {
         prizes: [
             { name: "₹150", icon: "images/prize_1.png" }, { name: "₹5000", icon: "images/prize_2.png" }, { name: "Meet Modi", icon: "images/prize_3.png" }, { name: "₹200", icon: "images/prize_4.png" }, { name: "₹1000", icon: "images/prize_5.png" }, { name: "₹500", icon: "images/prize_6.png" }
         ],
-        spinsAllowed: 2,
-        requiredClicks: 10
+        spinsAllowed: 2, requiredClicks: 10
     };
     let state = {
-        spinsLeft: config.spinsAllowed, isSpinning: false, shareClicks: 0
+        spinsLeft: config.spinsAllowed, isSpinning: false, shareClicks: 0,
+        // === FIXED: Variable to reliably store the winning prize ===
+        currentWinningPrize: null
     };
     let stats = { participants: 145234, rewards: 789450 };
     const fakeData = {
@@ -136,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.task1Container.style.display = 'none';
         elements.task2Container.style.display = 'block';
     });
-    
     elements.shareFriendsButton.addEventListener('click', (e) => {
         e.preventDefault();
         if (state.shareClicks >= config.requiredClicks) return;
@@ -146,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.progressText.textContent = `${state.shareClicks}/${config.requiredClicks}`;
         window.open(e.currentTarget.href, '_blank');
         if (state.shareClicks >= config.requiredClicks) {
-            elements.shareFriendsButton.classList.add('disabled');
-            elements.shareFriendsButton.textContent = "Reward Unlocked!";
+            e.currentTarget.classList.add('disabled');
+            e.currentTarget.textContent = "Reward Unlocked!";
             setTimeout(() => {
                 alert(translations.alert_reward_processed);
                 elements.taskSection.style.display = 'none';
@@ -185,8 +161,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentTransform = window.getComputedStyle(elements.spinner).transform;
         let currentRotation = 0;
         if (currentTransform !== 'none') {
-            const values = currentTransform.split('(').split(')').split(',');
-            currentRotation = Math.round(Math.atan2(values, values) * (180 / Math.PI));
+            const values = currentTransform.split('(')[1].split(')')[0].split(',');
+            currentRotation = Math.round(Math.atan2(values[1], values[0]) * (180 / Math.PI));
         }
         const rotation = (360 * 5) - (currentRotation % 360) + (360 - (winningIndex * degPerSeg) - (degPerSeg / 2));
         elements.spinner.style.transition = 'transform 6s cubic-bezier(0.25, 0.1, 0.25, 1)';
@@ -194,7 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             state.isSpinning = false;
             elements.spinButton.classList.remove('disabled');
-            showWinPopup(winningPrize);
+            // === FIXED: Securely store the prize object ===
+            state.currentWinningPrize = winningPrize;
+            showWinPopup();
         }, 6500);
     }
 
@@ -202,7 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.spinsLeftText.textContent = state.spinsLeft;
     }
 
-    function showWinPopup(prize) {
+    function showWinPopup() {
+        if (!state.currentWinningPrize) return; // Safety check
+        const prize = state.currentWinningPrize;
         elements.winMessage.textContent = `You've won: ${prize.name}!`;
         if (prize.name === "Meet Modi") {
             elements.modiWinImage.style.display = 'block';
@@ -215,11 +195,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleWinFormSubmit(e) {
         e.preventDefault();
-        
-        // === FIXED: How the prize text is extracted to prevent errors ===
-        const winText = elements.winMessage.textContent;
-        const prizeWonText = winText.substring(winText.indexOf(':') + 2).replace('!', '');
-
+        // === FIXED: Use the securely stored prize name, no more errors ===
+        if (!state.currentWinningPrize) {
+            alert("An error occurred. Please try again.");
+            return;
+        }
+        const prizeWonText = state.currentWinningPrize.name;
         const winnerData = {
             name: document.getElementById('winner-name').value,
             mobile: document.getElementById('winner-mobile').value,
@@ -243,15 +224,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setupShareButtons(prizeName) {
         const shareMsg = encodeURIComponent(`I just won ${prizeName} in the Independence Day event! You can try your luck too! Join here: ${window.location.href}`);
-        
-        // === FIXED: Check if the elements exist before setting href ===
         if (elements.whatsappStoryButton) {
             elements.whatsappStoryButton.href = `https://wa.me/?text=${shareMsg}`;
         }
         if (elements.shareFriendsButton) {
             elements.shareFriendsButton.href = `https://wa.me/?text=${shareMsg}`;
         }
-       
         const bonusMsg = encodeURIComponent(`🔥 BIGGEST REWARD! 🔥 Share with 25 friends to win ₹50,000 + Dinner with PM Modi! Join now: ${window.location.href}`);
         if (elements.bonusShareButton) {
             elements.bonusShareButton.href = `https://wa.me/?text=${bonusMsg}`;
